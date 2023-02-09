@@ -1,0 +1,12 @@
+.username {
+    color: gray;
+}
+
+.password-box {
+    margin-top: 40px;
+}
+
+.pad-vert {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}

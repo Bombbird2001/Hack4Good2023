@@ -14,6 +14,19 @@
       "allowSyntheticDefaultImports": true
     }
   },
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "target": "es6",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
   "exclude": [
     "node_modules"
   ],
