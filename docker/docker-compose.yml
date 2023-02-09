@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  db-development:
+    image: mysql:8.0.32
+    environment:
+      MYSQL_ROOT_PASSWORD: hack4good2023_syyt
+      MYSQL_DATABASE: profiles
+    ports:
+      - "3306:3306"
