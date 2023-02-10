@@ -17,9 +17,9 @@ const PublicProfile = () => {
     const [dialysisDays, setDialysisDays] = useState([false, false, false, false, false, false, false])
 
     const splat = useParams()
+    const username = splat["*"]
 
     useEffect(() => {
-        const username = splat["*"]
         if (username)
             getProfile(username, () => {
             }, (userObj) => {
@@ -37,10 +37,11 @@ const PublicProfile = () => {
             <Container fluid className="container-offset-default">
                 <Row>
                     <h1 className="pad-vert">{displayName}</h1>
+                    <h5 className="username">@{username}</h5>
                 </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
-                        <p>{description}</p>
+                        <p className="text-spacing multiline-text">{description}</p>
                     </Col>
                 </Row>
                 <Row style={{marginTop: "20px"}}>

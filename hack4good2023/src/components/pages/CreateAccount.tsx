@@ -1,18 +1,20 @@
 import {useTypedDispatch} from '../../utilities/typedReduxHooks'
 import {FormEvent, useState} from 'react'
 import {start} from "../../redux/slices/sessionSlice"
-import {login} from '../../requests/AuthenticationRequests'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 import './Login.css'
+import {createAccount} from "../../requests/AuthenticationRequests"
 
-const Login = () => {
+const CreateAccount = () => {
     const [username, setUsername] = useState('')
     const [showUsernameEmpty, setShowUsernameEmpty] = useState(false)
+    const [displayName, setDisplayName] = useState('')
+    const [showDisplayNameEmpty, setShowDisplayNameEmpty] = useState(false)
     const [showError, setShowError] = useState(false)
     const [errorMsg, setErrorMsg] = useState("")
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -20,7 +22,7 @@ const Login = () => {
     const dispatch = useTypedDispatch()
     const navigate = useNavigate()
 
-    const onLoginClicked = (e: FormEvent<HTMLFormElement>) => {
+    const onCreateClicked = (e: FormEvent<HTMLFormElement>) => {
         // Prevents page from refreshing when login button clicked
         e.preventDefault()
 
@@ -31,14 +33,15 @@ const Login = () => {
 
         // Ensure fields are not empty
         setShowUsernameEmpty(!username)
-        if (!username) {
+        setShowDisplayNameEmpty(!displayName)
+        if (!username || !displayName) {
             setButtonDisabled(false)
             return
         }
 
         // Send request to server
-        login(username, (reason) => {
-            setErrorMsg("Login failed: " + reason)
+        createAccount(username, displayName, (reason) => {
+            setErrorMsg("Account creation failed: " + reason)
             setShowError(true)
             setButtonDisabled(false)
         }, (username: string, displayName: String) => {
@@ -52,22 +55,23 @@ const Login = () => {
         <>
             <Container fluid>
                 <Row className="row-placeholder-margin"/>
-                <Row><h3 style={{textAlign: "center"}}>Login</h3></Row>
+                <Row><h3 style={{textAlign: "center"}}>Create Account</h3></Row>
                 <Row>
                     <Col xs={0} md={3}/>
                     <Col xs={12} md={6}>
-                        <Form onSubmit={onLoginClicked}>
+                        <Form onSubmit={onCreateClicked}>
                             <Form.Group className="form-control login-form">
                                 <Form.Label className="login-label">Username</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" value={username}
                                               onChange={(e) => setUsername(e.target.value)}/>
                                 {showUsernameEmpty && <p className="warning-msg">Please input username.</p>}
+                                <Form.Label className="login-label">Display name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter display name" value={displayName}
+                                              onChange={(e) => setDisplayName(e.target.value)}/>
+                                {showDisplayNameEmpty && <p className="warning-msg">Please input display name.</p>}
                                 {showError && <p className="warning-msg">{errorMsg}</p>}
                                 <Button type="submit" className="btn-block login-button" variant="dark"
-                                        disabled={buttonDisabled}>Login</Button>
-                                <Link to={"/createAccount"} style={{textDecoration: 'none'}}><Button
-                                    className="btn-block login-button"
-                                    variant="secondary">Create account</Button></Link>
+                                        disabled={buttonDisabled}>Create Account</Button>
                             </Form.Group>
                         </Form>
                     </Col>
@@ -78,4 +82,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default CreateAccount

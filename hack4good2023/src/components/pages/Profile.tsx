@@ -72,7 +72,7 @@ const Profile = () => {
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
                         <h2>About</h2>
-                        {!editDesc ? <p>{description}</p> :
+                        {!editDesc ? <p className="text-spacing multiline-text">{description}</p> :
                             <TextAreaEdit description={description} onUpdate={(newDesc) => {
                                 updateDescription(username, newDesc, () => {
                                 }, (newDescription) => {

@@ -15,6 +15,7 @@ import './index.css'
 import reportWebVitals from './reportWebVitals'
 import Profile from './components/pages/Profile'
 import PublicProfile from "./components/pages/PublicProfile"
+import CreateAccount from "./components/pages/CreateAccount"
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <NotLoggedIn component={<Login/>}/>
+    },
+    {
+        path: "/createAccount",
+        element: <NotLoggedIn component={<CreateAccount/>}/>
     },
     {
         path: "/profile",

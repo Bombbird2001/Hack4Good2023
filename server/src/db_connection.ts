@@ -35,11 +35,25 @@ const createTable = async () => {
  * @param username The username to check
  */
 export const login = async (username: string): Promise<string | undefined> => {
-    const [rows] = await conn.execute('SELECT * FROM users WHERE username = ? LIMIT 1', [username])
+    const [rows] = await conn.execute('SELECT displayName FROM users WHERE username = ? LIMIT 1', [username])
     const rowArray: RowDataPacket[] = rows as RowDataPacket[]
     if (rowArray.length === 0)
         return undefined
     return rowArray[0]["displayName"]
+}
+
+/**
+ * Creates a new user if username does not already exist
+ * @param username    The username to set
+ * @param displayName The display name to set
+ */
+export const createAccount = async (username: string, displayName: string) => {
+    const [existingUsername] = await conn.execute('SELECT username FROM users WHERE username = ? LIMIT 1', [username])
+    const rowArray: RowDataPacket[] = existingUsername as RowDataPacket[]
+    if (rowArray.length > 0)
+        return false
+    await conn.execute('INSERT INTO users (username, displayName) VALUES (?, ?)', [username, displayName])
+    return true
 }
 
 export const getProfile = async (username: string) => {

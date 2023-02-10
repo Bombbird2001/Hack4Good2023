@@ -3,6 +3,7 @@ import Helmet from "helmet"
 import Cors from "cors"
 import BodyParser from "body-parser"
 import {
+    createAccount,
     getProfile,
     login,
     startConnection,
@@ -24,6 +25,20 @@ app.post('/login', jsonParser, async (req, res) => {
     let displayName = await login(username)
     if (!displayName) {
         res.json({status: "failure", show: true, code: "Invalid username"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {username: username, displayName: displayName}})
+    res.end()
+})
+
+// Endpoint for creating account
+app.post('/createAccount', jsonParser, async (req, res) => {
+    const username = req.body.username
+    const displayName = req.body.displayName
+    let success = await createAccount(username, displayName)
+    if (!success) {
+        res.json({status: "failure", show: true, code: "Username already in use"})
         res.end()
         return
     }
