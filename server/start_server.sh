@@ -1,1 +1,1 @@
-ts-node-esm src/server.ts
+npx ts-node-esm src/server.ts
