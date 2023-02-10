@@ -70,8 +70,18 @@ const Profile = () => {
                     }}/>
                     <h5 className="username">@{username}</h5>
                 </Row>
-                <Link to={"/messages"} style={{textDecoration: 'none'}}><Button style={{marginTop: "20px"}} variant="dark">My
-                    messages</Button></Link>
+                <Row>
+                    <Col xs="auto">
+                        <Link to={"/messages"} style={{textDecoration: 'none'}}>
+                            <Button style={{marginTop: "20px"}} variant="dark">My messages</Button>
+                        </Link>
+                    </Col>
+                    <Col xs="auto">
+                        <Link to={"/user/" + username} style={{textDecoration: 'none'}}>
+                            <Button style={{marginTop: "20px"}} variant="dark">View public profile</Button>
+                        </Link>
+                    </Col>
+                </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
                         <h2>About</h2>

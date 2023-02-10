@@ -5,7 +5,7 @@ import {dateToSGStringFormat} from "../../utilities/utilities"
 import {Button, Container, Row} from "react-bootstrap"
 import {Link} from "react-router-dom"
 import {useTypedSelector} from "../../utilities/typedReduxHooks"
-import {getMessages, updateMsgRead} from "../../requests/MessageRequests"
+import {deleteMsg, getMessages, updateMsgRead} from "../../requests/MessageRequests"
 
 const Messages = () => {
     const username = useTypedSelector(state => state.session.username)
@@ -16,7 +16,7 @@ const Messages = () => {
         message: "",
         email: "",
         opened: false,
-        date: "2000-01-01"
+        date: 0
     })
     const [messages, setMessages] = useState([] as MessageObj[])
 
@@ -50,8 +50,12 @@ const Messages = () => {
                         </Link>
                     </Row>
                 )}
+                {messages.length === 0 && <p>You have no messages</p>}
                 <Message messageObj={openMessage} show={openIndex >= 0 && openIndex < messages.length}
-                         onHide={() => setOpenIndex(-1)}/>
+                         onHide={() => setOpenIndex(-1)} onDelete={(id) => deleteMsg(username, id, () => {
+                }, (id) => {
+                    setMessages(messages.filter(msg => msg.id !== id))
+                })}/>
             </Container>
         </>
     )

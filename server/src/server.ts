@@ -3,9 +3,10 @@ import Helmet from "helmet"
 import Cors from "cors"
 import BodyParser from "body-parser"
 import {
-    createAccount, getMessages,
+    addMsg,
+    createAccount, deleteMsg, getMessages,
     getProfile,
-    login,
+    login, MessageObj,
     startConnection,
     updateCanDo,
     updateCannotDo, updateDescription,
@@ -154,6 +155,39 @@ app.put('/updateMsgRead', jsonParser, async (req, res) => {
     let success = await updateMsgRead(username, msgId)
     if (!success) {
         res.json({status: "failure", show: true, code: "Failed to mark message as read"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {}})
+    res.end()
+})
+
+app.post('/sendMsg', jsonParser, async (req, res) => {
+    const msgObj: MessageObj = {
+        id: -1,
+        username: req.body.username,
+        title: req.body.msgObj.title,
+        email: req.body.msgObj.email,
+        message: req.body.msgObj.message,
+        opened: false,
+        date: req.body.msgObj.date
+    }
+    let success = await addMsg(msgObj)
+    if (!success) {
+        res.json({status: "failure", show: true, code: "Failed to send message"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {}})
+    res.end()
+})
+
+app.delete('/deleteMsg', jsonParser, async (req, res) => {
+    const username = req.body.username
+    const id = req.body.id
+    let success = await deleteMsg(username, id)
+    if (!success) {
+        res.json({status: "failure", show: true, code: "Failed to delete message"})
         res.end()
         return
     }

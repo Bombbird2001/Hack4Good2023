@@ -1,8 +1,9 @@
 import {Connection, createConnection, RowDataPacket} from 'mysql2/promise'
 import {ResultSetHeader} from "mysql2"
 
-interface MessageObj {
+export interface MessageObj {
     id: number,
+    username: string,
     title: string,
     email: string,
     message: string,
@@ -51,7 +52,7 @@ const createTable = async () => {
 
     if (!msgTableMade) {
         await conn.execute(
-            'CREATE TABLE messages ( id INT, username VARCHAR(255), title VARCHAR(255), message TEXT(65535), email VARCHAR(255), opened BOOL, date VARCHAR(31), PRIMARY KEY (id))'
+            'CREATE TABLE messages ( id INT AUTO_INCREMENT, username VARCHAR(255), title VARCHAR(255), message TEXT(65535), email VARCHAR(255), opened BOOL, date BIGINT(20), PRIMARY KEY (id))'
         )
         console.log("Message table created")
     }
@@ -147,6 +148,18 @@ export const getMessages = async (username: string): Promise<MessageObj[]> => {
 
 export const updateMsgRead = async (username: string, id: number) => {
     const [rows] = await conn.execute('UPDATE messages SET opened = 1 WHERE id = ? AND username = ?', [id, username])
+    const resultSet = rows as ResultSetHeader
+    return resultSet.affectedRows > 0
+}
+
+export const addMsg = async (msgObj: MessageObj) => {
+    await conn.execute('INSERT INTO messages (username, title, message, email, opened, date) VALUES (?, ?, ?, ?, ?, ?)',
+        [msgObj.username, msgObj.title, msgObj.message, msgObj.email, false, msgObj.date])
+    return true
+}
+
+export const deleteMsg = async (username: number, id: number) => {
+    const [rows] = await conn.execute('DELETE FROM messages WHERE id = ? AND username = ?', [id, username])
     const resultSet = rows as ResultSetHeader
     return resultSet.affectedRows > 0
 }
