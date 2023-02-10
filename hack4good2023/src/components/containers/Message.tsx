@@ -3,6 +3,7 @@ import {Link} from "react-router-dom"
 import {dateToSGStringFormat} from "../../utilities/utilities"
 
 export interface MessageObj {
+    id: number,
     title: string,
     email: string,
     message: string,

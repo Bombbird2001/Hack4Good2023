@@ -1,7 +1,16 @@
 import {Connection, createConnection, RowDataPacket} from 'mysql2/promise'
 import {ResultSetHeader} from "mysql2"
 
-let conn: Connection;
+interface MessageObj {
+    id: number,
+    title: string,
+    email: string,
+    message: string,
+    opened: boolean,
+    date: string
+}
+
+let conn: Connection
 
 export const startConnection = async () => {
     conn = await createConnection({
@@ -22,12 +31,30 @@ export const startConnection = async () => {
 const createTable = async () => {
     const [rows] = await conn.execute('show tables', [])
     const rowArray: RowDataPacket[] = rows as RowDataPacket[]
+    let userTableMade = false
+    let msgTableMade = false
     for (let row of rowArray) {
         if (row["Tables_in_profiles"] === 'users')
-            return;
+            userTableMade = true
+        if (row["Tables_in_profiles"] === 'messages')
+            msgTableMade = true
+        if (userTableMade && msgTableMade)
+            return
     }
-    await conn.execute(
-        'CREATE TABLE users ( username VARCHAR(255), displayName VARCHAR(255), description TEXT(65535), skills TEXT(65535), canDo TEXT(65535), cannotDo TEXT(65535), dialysisDays VARCHAR(255), PRIMARY KEY (username))')
+
+    if (!userTableMade) {
+        await conn.execute(
+            'CREATE TABLE users ( username VARCHAR(255), displayName VARCHAR(255), description TEXT(65535), skills TEXT(65535), canDo TEXT(65535), cannotDo TEXT(65535), dialysisDays VARCHAR(255), PRIMARY KEY (username))'
+        )
+        console.log("User table created")
+    }
+
+    if (!msgTableMade) {
+        await conn.execute(
+            'CREATE TABLE messages ( id INT, username VARCHAR(255), title VARCHAR(255), message TEXT(65535), email VARCHAR(255), opened BOOL, date VARCHAR(31), PRIMARY KEY (id))'
+        )
+        console.log("Message table created")
+    }
 }
 
 /**
@@ -96,6 +123,30 @@ export const updateCannotDo = async (username: string, cannotDo: string) => {
 
 export const updateDialysisDays = async (username: string, dialysisDays: string) => {
     const [rows] = await conn.execute('UPDATE users SET dialysisDays = ? WHERE username = ?', [dialysisDays, username])
+    const resultSet = rows as ResultSetHeader
+    return resultSet.affectedRows > 0
+}
+
+export const getMessages = async (username: string): Promise<MessageObj[]> => {
+    const [rows] = await conn.execute('SELECT * FROM messages WHERE username = ? ORDER BY id DESC', [username])
+    const rowArray: RowDataPacket[] = rows as RowDataPacket[]
+    if (rowArray.length === 0)
+        return undefined
+    return rowArray.map(row => {
+        return {
+            id: row.id,
+            username: row.username,
+            title: row.title,
+            email: row.email,
+            message: row.message,
+            opened: row.opened,
+            date: row.date
+        }
+    })
+}
+
+export const updateMsgRead = async (username: string, id: number) => {
+    const [rows] = await conn.execute('UPDATE messages SET opened = 1 WHERE id = ? AND username = ?', [id, username])
     const resultSet = rows as ResultSetHeader
     return resultSet.affectedRows > 0
 }

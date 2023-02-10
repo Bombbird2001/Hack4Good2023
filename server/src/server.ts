@@ -3,14 +3,14 @@ import Helmet from "helmet"
 import Cors from "cors"
 import BodyParser from "body-parser"
 import {
-    createAccount,
+    createAccount, getMessages,
     getProfile,
     login,
     startConnection,
     updateCanDo,
     updateCannotDo, updateDescription,
     updateDialysisDays,
-    updateDisplayName,
+    updateDisplayName, updateMsgRead,
     updateSkills
 } from "./db_connection.js"
 
@@ -133,6 +133,31 @@ app.put('/updateDialysisDays', jsonParser, async (req, res) => {
         return
     }
     res.json({status: "success", data: {username: username, dialysisDays: dialysisDays}})
+    res.end()
+})
+
+app.post('/getMessages', jsonParser, async (req, res) => {
+    const username = req.body.username
+    const messages = await getMessages(username)
+    if (!messages) {
+        res.json({status: "failure", show: true, code: "Failed to retrieve messages"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {username: username, messages: messages}})
+    res.end()
+})
+
+app.put('/updateMsgRead', jsonParser, async (req, res) => {
+    const username = req.body.username
+    const msgId = req.body.msgId
+    let success = await updateMsgRead(username, msgId)
+    if (!success) {
+        res.json({status: "failure", show: true, code: "Failed to mark message as read"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {}})
     res.end()
 })
 
