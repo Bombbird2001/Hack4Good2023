@@ -1,4 +1,16 @@
+# Online portal for kidney patients (PS1)
+This is a simple online portal for kidney patients to put relevant information for potential recruiters.\
+It has a create account, authentication function (only using username for now for simplicity, if this were
+to be deployed IRL there will be more security measures).\
+In the profile page, the user can add a description about themselves, their skills, what they can and
+cannot do as kidney patients, as well as their weekly dialysis schedules.\
+For each user, a public profile is also created which can be accessed by anyone without logging in, and
+they can send the user a message with their contact information for follow-ups.\
+These messages are visible in the messages section of the user's account, which they can access from
+their profile, with options to send an email to the person, or to delete the message.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).\
+A Node Express server is used for the backend, and MySQL running in Docker for database storage.\
 Requires Docker and [Docker-Compose](https://github.com/docker/compose) to be installed.
 
 # First time setup
