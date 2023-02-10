@@ -14,6 +14,7 @@ import store, {persistor} from "./redux/store"
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 import Profile from './components/pages/Profile'
+import PublicProfile from "./components/pages/PublicProfile"
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path: "/profile",
         element: <RequiresLogin component={<Profile/>}/>
+    },
+    {
+        path: "/user/*",
+        element: <PublicProfile/>
     }
 ])
 
