@@ -6,6 +6,7 @@ import {
     addMsg,
     createAccount, deleteMsg, getMessages,
     getProfile,
+    getProfileAll,
     login, MessageObj,
     startConnection,
     updateCanDo,
@@ -52,6 +53,17 @@ app.post('/getProfile', jsonParser, async (req, res) => {
     const userObj = await getProfile(username)
     if (!userObj) {
         res.json({status: "failure", show: true, code: "Failed to retrieve user profile"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: userObj})
+    res.end()
+})
+
+app.get('/getProfileAll', jsonParser, async (_, res) => {
+    const userObj = await getProfileAll()
+    if (!userObj) {
+        res.json({status: "failure", show: true, code: "Failed to retrieve profiles"})
         res.end()
         return
     }

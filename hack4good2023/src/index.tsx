@@ -17,6 +17,7 @@ import Profile from './components/pages/Profile'
 import PublicProfile from "./components/pages/PublicProfile"
 import CreateAccount from "./components/pages/CreateAccount"
 import Messages from "./components/pages/Messages"
+import Home from "./components/pages/Home"
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
     {
         path: "/user/*",
         element: <PublicProfile/>
+    },
+    {
+        path: "/home",
+        element: <Home/>
     }
 ])
 

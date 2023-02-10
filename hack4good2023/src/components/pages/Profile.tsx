@@ -120,7 +120,7 @@ const Profile = () => {
                 </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
-                        <h2>I can</h2>
+                        <h2>Strengths</h2>
                         {!editCanDo ? <TextList items={canDo}/> :
                             <TextListEdit items={canDo} onChangeList={(newList) => {
                                 updateCanDo(username, newList.filter(item => item), () => {
@@ -136,7 +136,7 @@ const Profile = () => {
                         </Row>}
                     </Col>
                     <Col xs={12} md={6}>
-                        <h2>I cannot</h2>
+                        <h2>Weaknesses</h2>
                         {!editCannotDo ? <TextList items={cannotDo}/> :
                             <TextListEdit items={cannotDo} onChangeList={(newList) => {
                                 updateCannotDo(username, newList.filter(item => item), () => {

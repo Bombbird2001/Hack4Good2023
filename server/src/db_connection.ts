@@ -92,6 +92,15 @@ export const getProfile = async (username: string) => {
     return rowArray[0]
 }
 
+export const getProfileAll = async () => {
+    const [rows] = await conn.execute('SELECT * FROM users')
+    const rowArray: RowDataPacket[] = rows as RowDataPacket[]
+    if (rowArray.length === 0)
+        return undefined
+    return rowArray
+}
+
+
 export const updateDisplayName = async (username: string, newDisplayName: string) => {
     const [rows] = await conn.execute('UPDATE users SET displayName = ? WHERE username = ?', [newDisplayName, username])
     const resultSet = rows as ResultSetHeader
