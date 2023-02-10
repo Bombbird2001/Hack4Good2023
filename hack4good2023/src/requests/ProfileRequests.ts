@@ -17,6 +17,7 @@ export const getProfile = (username: string, onError: (reason: string) => void,
                     let userObj: User = {
                         username: resJson.data.username,
                         displayName: resJson.data.displayName,
+                        description: resJson.data.description,
                         skills: JSON.parse(resJson.data.skills),
                         canDo: JSON.parse(resJson.data.canDo),
                         cannotDo: JSON.parse(resJson.data.cannotDo),
@@ -61,6 +62,35 @@ export const updateDisplayName = (username: string, displayName: string, dispatc
         }
     }
     let data = {"username": username, "newDisplayName": displayName}
+    xhr.send(JSON.stringify(data))
+}
+
+/**
+ * Updates the profile description of the supplied username.
+ * @param username    The username.
+ * @param description The new display name.
+ * @param onError     The function to be executed if error occurs.
+ * @param onSuccess   The function to be executed if update succeeds.
+ */
+export const updateDescription = (username: string, description: string,
+                                  onError: (reason: string) => void, onSuccess: (newDisplayName: string) => void) => {
+    let xhr = new XMLHttpRequest()
+    xhr.open("PUT", "http://localhost:4149/updateDescription", true)
+    setContentHeader(xhr)
+    xhr.onload = (_e) => {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                let resData = xhr.responseText
+                // console.log(resData)
+                let resJson = parseResponseJSON(resData, onError)
+                if (resJson) onSuccess(resJson.data.description)
+            } else {
+                console.error(xhr.statusText)
+                onError("An error occurred")
+            }
+        }
+    }
+    let data = {"username": username, "description": description}
     xhr.send(JSON.stringify(data))
 }
 

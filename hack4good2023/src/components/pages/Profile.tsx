@@ -5,7 +5,7 @@ import ProfileEditable from '../containers/ProfileEditable'
 import {
     getProfile,
     updateCanDo,
-    updateCannotDo,
+    updateCannotDo, updateDescription,
     updateDialysisDays,
     updateDisplayName,
     updateSkills
@@ -19,10 +19,12 @@ import {useEffect, useState} from "react"
 import {Button, Col} from "react-bootstrap"
 import DialysisDays from "../containers/DialysisDays"
 import DialysisDaysEdit from "../containers/DialysisDaysEdit"
+import TextAreaEdit from "../containers/TextAreaEdit"
 
 export interface User {
     username: string,
     displayName: string,
+    description: string,
     skills: string[],
     canDo: string[],
     cannotDo: string[],
@@ -32,6 +34,8 @@ export interface User {
 const Profile = () => {
     const displayName = useTypedSelector(state => state.session.displayName)
     const username = useTypedSelector(state => state.session.username)
+    const [description, setDescription] = useState("")
+    const [editDesc, setEditDesc] = useState(false)
     const [skills, setSkills] = useState([] as string[])
     const [editSkills, setEditSkills] = useState(false)
     const [canDo, setCanDo] = useState([] as string[])
@@ -46,6 +50,7 @@ const Profile = () => {
     useEffect(() => {
         getProfile(username, () => {
         }, (userObj) => {
+            if (userObj.description) setDescription(userObj.description)
             if (userObj.skills) setSkills(userObj.skills)
             if (userObj.canDo) setCanDo(userObj.canDo)
             if (userObj.cannotDo) setCannotDo(userObj.cannotDo)
@@ -63,6 +68,24 @@ const Profile = () => {
                         updateDisplayName(username, newDisplayName, dispatch, onError, (newDisplayName) => dispatch(updateDispName({displayName: newDisplayName})))
                     }}/>
                     <h5 className="username">@{username}</h5>
+                </Row>
+                <Row style={{marginTop: "20px"}}>
+                    <Col xs={12} md={6}>
+                        <h2>About</h2>
+                        {!editDesc ? <p>{description}</p> :
+                            <TextAreaEdit description={description} onUpdate={(newDesc) => {
+                                updateDescription(username, newDesc, () => {
+                                }, (newDescription) => {
+                                    setDescription(newDescription)
+                                })
+                            }} onCancel={() => setEditDesc(false)}/>}
+                        {!editDesc && <Row>
+                            <Col xs="auto">
+                                <Button variant="dark" onClick={() => setEditDesc(true)}
+                                        style={{marginBottom: "10px"}}>Edit</Button>
+                            </Col>
+                        </Row>}
+                    </Col>
                 </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>

@@ -7,7 +7,7 @@ import {
     login,
     startConnection,
     updateCanDo,
-    updateCannotDo,
+    updateCannotDo, updateDescription,
     updateDialysisDays,
     updateDisplayName,
     updateSkills
@@ -53,6 +53,19 @@ app.put('/updateDisplayName', jsonParser, async (req, res) => {
         return
     }
     res.json({status: "success", data: {username: username, displayName: displayName}})
+    res.end()
+})
+
+app.put('/updateDescription', jsonParser, async (req, res) => {
+    const username = req.body.username
+    const description = req.body.description
+    const success = await updateDescription(username, description)
+    if (!success) {
+        res.json({status: "failure", show: true, code: "Failed to update description"})
+        res.end()
+        return
+    }
+    res.json({status: "success", data: {username: username, description: description}})
     res.end()
 })
 

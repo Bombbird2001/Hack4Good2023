@@ -27,7 +27,7 @@ const createTable = async () => {
             return;
     }
     await conn.execute(
-        'CREATE TABLE users ( username VARCHAR(255), displayName VARCHAR(255), skills TEXT(65535), canDo TEXT(65535), cannotDo TEXT(65535), dialysisDays VARCHAR(255), PRIMARY KEY (username))')
+        'CREATE TABLE users ( username VARCHAR(255), displayName VARCHAR(255), description TEXT(65535), skills TEXT(65535), canDo TEXT(65535), cannotDo TEXT(65535), dialysisDays VARCHAR(255), PRIMARY KEY (username))')
 }
 
 /**
@@ -52,6 +52,12 @@ export const getProfile = async (username: string) => {
 
 export const updateDisplayName = async (username: string, newDisplayName: string) => {
     const [rows] = await conn.execute('UPDATE users SET displayName = ? WHERE username = ?', [newDisplayName, username])
+    const resultSet = rows as ResultSetHeader
+    return resultSet.affectedRows > 0
+}
+
+export const updateDescription = async (username: string, newDescription: string) => {
+    const [rows] = await conn.execute('UPDATE users SET description = ? WHERE username = ?', [newDescription, username])
     const resultSet = rows as ResultSetHeader
     return resultSet.affectedRows > 0
 }

@@ -10,6 +10,7 @@ import {useParams} from "react-router"
 
 const PublicProfile = () => {
     const [displayName, setDisplayName] = useState("")
+    const [description, setDescription] = useState("")
     const [skills, setSkills] = useState([] as string[])
     const [canDo, setCanDo] = useState([] as string[])
     const [cannotDo, setCannotDo] = useState([] as string[])
@@ -23,6 +24,7 @@ const PublicProfile = () => {
             getProfile(username, () => {
             }, (userObj) => {
                 if (userObj.displayName) setDisplayName(userObj.displayName)
+                if (userObj.description) setDescription(userObj.description)
                 if (userObj.skills) setSkills(userObj.skills)
                 if (userObj.canDo) setCanDo(userObj.canDo)
                 if (userObj.cannotDo) setCannotDo(userObj.cannotDo)
@@ -35,6 +37,11 @@ const PublicProfile = () => {
             <Container fluid className="container-offset-default">
                 <Row>
                     <h1 className="pad-vert">{displayName}</h1>
+                </Row>
+                <Row style={{marginTop: "20px"}}>
+                    <Col xs={12} md={6}>
+                        <p>{description}</p>
+                    </Col>
                 </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
