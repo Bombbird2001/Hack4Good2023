@@ -1,7 +1,7 @@
 import {useTypedDispatch} from '../../utilities/typedReduxHooks'
 import {FormEvent, useState} from 'react'
 import {start} from "../../redux/slices/sessionSlice"
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -72,6 +72,9 @@ const CreateAccount = () => {
                                 {showError && <p className="warning-msg">{errorMsg}</p>}
                                 <Button type="submit" className="btn-block login-button" variant="dark"
                                         disabled={buttonDisabled}>Create Account</Button>
+                                <Link to={"/login"} style={{textDecoration: 'none'}}><Button
+                                    className="btn-block login-button"
+                                    variant="secondary">Back to Login</Button></Link>
                             </Form.Group>
                         </Form>
                     </Col>

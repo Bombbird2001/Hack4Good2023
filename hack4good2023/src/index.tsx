@@ -16,6 +16,7 @@ import reportWebVitals from './reportWebVitals'
 import Profile from './components/pages/Profile'
 import PublicProfile from "./components/pages/PublicProfile"
 import CreateAccount from "./components/pages/CreateAccount"
+import Messages from "./components/pages/Messages"
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: "/profile",
         element: <RequiresLogin component={<Profile/>}/>
+    },
+    {
+        path: "/messages",
+        element: <RequiresLogin component={<Messages/>}/>
     },
     {
         path: "/user/*",
