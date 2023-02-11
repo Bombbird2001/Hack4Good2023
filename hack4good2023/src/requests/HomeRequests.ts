@@ -10,7 +10,7 @@ export const getProfileAll = (username: string, onError: (reason: string) => voi
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 let resData = xhr.responseText
-                console.log("Get Profile All: " + resData)
+                // console.log("Get Profile All: " + resData)
                 let resJson = parseResponseJSON(resData, onError)
                 if (resJson)
                     onSuccess(resJson.data)
