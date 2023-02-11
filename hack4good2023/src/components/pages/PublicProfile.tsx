@@ -6,7 +6,7 @@ import TextList from "../containers/TextList"
 import {useEffect, useState} from "react"
 import {Button, Col, Modal} from "react-bootstrap"
 import DialysisDays from "../containers/DialysisDays"
-import {useParams} from "react-router"
+import {redirect, useParams} from "react-router"
 import MessageSend from "../containers/MessageSend"
 import {sendMsg} from "../../requests/MessageRequests"
 
@@ -26,6 +26,8 @@ const PublicProfile = () => {
     useEffect(() => {
         if (username)
             getProfile(username, () => {
+                console.log("Not found")
+                redirect("/notFound")
             }, (userObj) => {
                 if (userObj.displayName) setDisplayName(userObj.displayName)
                 if (userObj.description) setDescription(userObj.description)
@@ -57,11 +59,11 @@ const PublicProfile = () => {
                 </Row>
                 <Row style={{marginTop: "20px"}}>
                     <Col xs={12} md={6}>
-                        <h2>I can</h2>
+                        <h2>Strengths</h2>
                         <TextList items={canDo}/>
                     </Col>
                     <Col xs={12} md={6}>
-                        <h2>I cannot</h2>
+                        <h2>Weaknesses</h2>
                         <TextList items={cannotDo}/>
                     </Col>
                 </Row>

@@ -1,4 +1,4 @@
-# Online portal for kidney patients (PS1)
+# Kidnet - Online portal for kidney patients
 This is a simple online portal for kidney patients to put relevant information for potential recruiters.\
 It has a create account, authentication function (only using username for now for simplicity, if this were
 to be deployed IRL there will be more security measures).\

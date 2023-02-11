@@ -57,7 +57,7 @@ const MessageSend = (args: {
                             {titleWarn && <p className="warning-msg">Please input title.</p>}
                         </Col>
                         <Col xs={12} md={6}>
-                            <Form.Label>Items</Form.Label>
+                            <Form.Label>Email</Form.Label>
                             <Form.Control type="email" placeholder="Contact email" value={email}
                                           onChange={(e) => setEmail(e.target.value)}/>
                             {emailWarn && <p className="warning-msg">Please input your contact email.</p>}
