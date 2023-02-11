@@ -21,9 +21,9 @@ import Home from "./components/pages/Home"
 
 const router = createBrowserRouter([
     {
-        // Navigate to login screen
+        // Navigate to home screen
         path: "/",
-        element: <Navigate to="login" replace/>
+        element: <Navigate to="home" replace/>
     },
     {
         path: "/login",
