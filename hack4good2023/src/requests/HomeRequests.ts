@@ -1,4 +1,3 @@
-import {AppDispatch} from '../redux/store'
 import {parseResponseJSON, setContentHeader} from '../utilities/utilities'
 import {User} from "../components/pages/Profile"
 
@@ -14,13 +13,12 @@ export const getProfileAll = (username: string, onError: (reason: string) => voi
                 console.log("Get Profile All: " + resData)
                 let resJson = parseResponseJSON(resData, onError)
                 if (resJson)
-                    onSuccess(resJson.data.messages)
+                    onSuccess(resJson.data)
             } else {
                 console.error(xhr.statusText)
                 onError("An error occurred")
             }
         }
     }
-    let data = {"username": username}
-    xhr.send(JSON.stringify(data))
+    xhr.send()
 }

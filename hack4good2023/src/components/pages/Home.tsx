@@ -1,36 +1,19 @@
-import {useTypedSelector, useTypedDispatch} from '../../utilities/typedReduxHooks'
+import {useTypedSelector} from '../../utilities/typedReduxHooks'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import { getProfileAll } from '../../requests/HomeRequests'
+import {getProfileAll} from '../../requests/HomeRequests'
 import './Profile.css'
-import LogoutButton from "../containers/LogoutButton"
-import TextList from "../containers/TextList"
-import TextListEdit from "../containers/TextListEdit"
-import {useEffect, useState} from "react"
-import {Button, Col} from "react-bootstrap"
-
-export interface User {
-    username: string,
-    displayName: string,
-    description: string,
-    skills: string[],
-    canDo: string[],
-    cannotDo: string[],
-    dialysisDays: boolean[]
-}
+import {useEffect} from "react"
+import {Col} from "react-bootstrap"
 
 const Home = () => {
-    const displayName = useTypedSelector(state => state.session.displayName)
     const username = useTypedSelector(state => state.session.username)
     const about = "test"
-
-    const dispatch = useTypedDispatch()
 
     useEffect(() => {
         getProfileAll("", () => {
             console.log("Failed Request")
         }, (userObj) => {
-            console.log("Test : " + userObj)
         })
     })
 
